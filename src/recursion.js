@@ -147,14 +147,24 @@ var palindrome = function(string) {
 // modulo(17,5) // 2
 // modulo(22,6) // 4
 var modulo = function(x, y) {
-    if (y === 0) {
-        return NaN
+    if (y === 0) { 
+        return NaN; 
     }
-    if (x >= y) {
-        return modulo((x-y), y);
+    if (x < 0 && y < 0) {
+        if (x > y) { 
+        return x; 
+        }
+    } else if ((x < 0 && y > 0) || (x > 0 && y < 0)) {
+        if (-x < y) { 
+        return x; 
+        }
+        return modulo(x + y, y);
     } else {
-        return x;
+        if (x < y) { 
+        return x; 
+        }
     }
+    return modulo(x - y, y);
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
@@ -226,16 +236,34 @@ var compareStr = function(str1, str2) {
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
+    let result = [str[0]];
+    if (str.length === 0) {
+        return []; 
+    } else {
+        return result.concat(createArray(str.slice(1)));
+    }
 };
 
 // 17. Reverse the order of an array
 var reverseArr = function(array) {
+    let result = [array[array.length - 1]];
+    if (array.length === 0) {
+        return [];
+    } else {
+        return result.concat(reverseArr(array.slice(0, array.length -1)));
+    }
 };
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
+    let result = [value];
+    if (length === 0) {
+        return [];
+    } else {
+        return result.concat(buildList(value, length-1));
+    }
 };
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
@@ -244,17 +272,46 @@ var buildList = function(value, length) {
 // For numbers which are multiples of both three and five, output “FizzBuzz” instead of the number.
 // fizzBuzz(5) // ['1','2','Fizz','4','Buzz']
 var fizzBuzz = function(n) {
+    let result = [n.toString()];
+    if (n % 3 === 0) {
+        result = ['Fizz'];
+    } 
+    if (n % 5 === 0) {
+        result = ['Buzz'];
+    }
+    if (n % 5 === 0 && n % 3 === 0) {
+        result = ['FizzBuzz'];
+    }
+    if (n === 0) {
+        return [];
+    }
+    return fizzBuzz(n-1).concat(result);
 };
 
 // 20. Count the occurence of a value in a list.
 // countOccurrence([2,7,4,4,1,4], 4) // 3
 // countOccurrence([2,'banana',4,4,1,'banana'], 'banana') // 2
 var countOccurrence = function(array, value) {
+    let add = 0;
+    if (array[0] === value) {
+        add = 1;
+    }
+    if (array.length === 0) {
+        return 0;
+    } else {
+        return add + countOccurrence(array.slice(1), value);
+    }
 };
 
 // 21. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
 var rMap = function(array, callback) {
+    let value = [callback(array[0])];
+    if (array.length === 0) {
+        return [];
+    } else {
+        return value.concat(rMap(array.slice(1), callback));
+    }
 };
 
 // 22. Write a function that counts the number of times a key occurs in an object.
@@ -262,6 +319,7 @@ var rMap = function(array, callback) {
 // countKeysInObj(obj, 'r') // 1
 // countKeysInObj(obj, 'e') // 2
 var countKeysInObj = function(obj, key) {
+    
 };
 
 // 23. Write a function that counts the number of times a value occurs in an object.
